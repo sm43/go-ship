@@ -8,7 +8,7 @@ import (
 
 // using locks
 
-func main() {
+func case6() {
 	var mut sync.Mutex
 
 	alice := 10000
