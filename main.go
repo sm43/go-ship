@@ -1,16 +1,30 @@
 package main
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 func main() {
-	var a  string
-	var wg sync.WaitGroup
-	wg.Add(1)
 
-	go func ()  {
-		a = "hello world"
-		wg.Done()	
-	}()
+	var wg sync.WaitGroup
+
+	// If it waits for more than required go routine
+	// then after finishing the last one it errors out
+	// wg.Add(6)
+
+	for i := 0; i < 5; i++ {
+		wg.Add(1)
+		go func(x int) {
+			// send and done
+			sendRPC(x)
+			wg.Done()
+		}(i)
+	}
+
 	wg.Wait()
-	print(a)
+}
+
+func sendRPC(x int) {
+	fmt.Println(x)
 }
