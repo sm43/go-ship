@@ -9,10 +9,8 @@ import (
 // Why do we need mutex?
 
 // add a lock
-var mu sync.Mutex
-
 func case5() {
-
+	var mu sync.Mutex
 	counter := 0
 	for i := 0; i < 1000; i++ {
 		go func() {

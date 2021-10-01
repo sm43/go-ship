@@ -6,11 +6,10 @@ import (
 	"time"
 )
 
-var mut sync.Mutex
-
 // using locks
 
 func main() {
+	var mut sync.Mutex
 
 	alice := 10000
 	bob := 10000
