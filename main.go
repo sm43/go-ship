@@ -3,28 +3,38 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
+var mu sync.Mutex
+var done bool
+
 func main() {
+	time.Sleep(1 * time.Second)
+	fmt.Println("started")
+	go timely()
+	time.Sleep(5 * time.Second)
 
-	var wg sync.WaitGroup
+	mu.Lock()
+	done = true
+	mu.Unlock()
 
-	// If it waits for more than required go routine
-	// then after finishing the last one it errors out
-	// wg.Add(6)
+	fmt.Println("finished the routine")
 
-	for i := 0; i < 5; i++ {
-		wg.Add(1)
-		go func(x int) {
-			// send and done
-			sendRPC(x)
-			wg.Done()
-		}(i)
-	}
-
-	wg.Wait()
+	// this will let I am completed to print otherwise it will
+	// be missed
+	time.Sleep(3 * time.Second)
 }
 
-func sendRPC(x int) {
-	fmt.Println(x)
+func timely() {
+	for {
+		fmt.Println("sm")
+		time.Sleep(1 * time.Second)
+		mu.Lock()
+		if done {
+			break
+		}
+		mu.Unlock()
+	}
+	fmt.Println("I am completed")
 }
