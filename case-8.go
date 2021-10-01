@@ -49,3 +49,19 @@ func case8() {
 func requestVote() bool {
 	return true
 }
+
+/* mu.lock
+	// do something that might affect the condition
+	cond.broadcast
+	mu.unlock
+
+---
+
+mu.lock
+while condition == false {
+	cond.wait
+}
+mu.unlock
+
+
+*/
